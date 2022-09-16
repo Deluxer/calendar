@@ -7,3 +7,5 @@
 * Bootstrap 5
 * Font aewsome (cdnjs)
 * react-big-calendar
+* react-modal
+* sweetalert2
