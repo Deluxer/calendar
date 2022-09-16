@@ -11,7 +11,6 @@ export const AppRouter = () => {
     authStatus = 'authenticated';
   }
   
-  
   return (
     <Routes>
       {

@@ -9,8 +9,7 @@ import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import es from 'date-fns/locale/es';
 import { useForm } from '../../hooks/useForm';
-import { useUiStore } from '../../hooks';
-import { useCalendarStore } from '../../hooks/useCalendarStore';
+import { useUiStore, useCalendarStore } from '../../hooks';
 registerLocale('es', es);
 
 const customStyles = {
@@ -38,9 +37,9 @@ const initialValues = {
 export const CalendarModal = () => {
     
     const [formSubmitted, setFormSubmitted] = useState(false)
-    const { title, notes, start, end, onInputChange, onChange } = useForm(initialValues);
+    const { title, notes, start, end, formState, onInputChange, onChange } = useForm(initialValues);
     const { isDateModalOpen, closeDateModal } = useUiStore();
-    const { activeEvent } = useCalendarStore();
+    const { activeEvent, startSavingEvent } = useCalendarStore();
 
     useEffect(() => {
       if(activeEvent !== null ) {
@@ -58,7 +57,7 @@ export const CalendarModal = () => {
         closeDateModal()
     }
 
-    const onSubmit = (event: any) => {
+    const onSubmit = async(event: any) => {
         event.preventDefault();
         setFormSubmitted(true);
 
@@ -71,10 +70,9 @@ export const CalendarModal = () => {
 
         if( title.length <= 0) return;
 
-        console.log(event);
-        // TODO
-        // Cerrar modal
-        
+        await startSavingEvent( formState );
+        closeDateModal();
+        setFormSubmitted(false);
     }
 
   return (
